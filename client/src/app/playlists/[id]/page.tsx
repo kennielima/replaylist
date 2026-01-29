@@ -4,7 +4,11 @@ import PlaylistComponent from './components/PlaylistComponent';
 import fetchCurrentUser from '@/services/getMe';
 import fetchSpotifyPlaylist from '@/services/getSpotifyPlaylist';
 
-const page = async ({ params }: { params: { id: string } }) => {
+type Params = Promise<{
+    id: string
+}>
+
+const page = async ({ params }: { params: Params }) => {
     const { id } = await params;
 
     const playlistData = await fetchAPlaylist(id);

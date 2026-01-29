@@ -95,7 +95,7 @@ async function getFeaturedPlaylists(req: TokenRequest, res: Response) {
 
 async function getPlaylist(req: TokenRequest, res: Response) {
     const accessToken = req.access_token;
-    const id = req.params.id;
+    const id = req.params.id as string;
     const cacheKey = `playlist:${id}`;
     const cached = await redis.get(cacheKey);
 

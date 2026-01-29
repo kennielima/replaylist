@@ -1,16 +1,16 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import prisma from './lib/prisma.ts';
-import playlistRoutes from "./routes/playlist.route.ts";
-import trackerRoutes from "./routes/tracker.route.ts";
-import snapshotRoutes from "./routes/snapshot.route.ts";
-import authRoutes from "./routes/auth.route.ts";
-import userRoutes from "./routes/user.route.ts";
-import searchRoutes from "./routes/search.route.ts";
+import prisma from './lib/prisma';
+import playlistRoutes from "./routes/playlist.route";
+import trackerRoutes from "./routes/tracker.route";
+import snapshotRoutes from "./routes/snapshot.route";
+import authRoutes from "./routes/auth.route";
+import userRoutes from "./routes/user.route";
+import searchRoutes from "./routes/search.route";
 import cookieParser from "cookie-parser";
-import cronJob from "./services/cronjob.ts";
-import { BASE_URL, PORT } from "./lib/config.ts";
+import cronJob from "./services/cronjob";
+import { BASE_URL, PORT } from "./lib/config";
 import logger from "./lib/logger";
 
 const app = express();

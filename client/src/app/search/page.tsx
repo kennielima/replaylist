@@ -3,7 +3,12 @@ import React from 'react'
 import SearchResult from './components/SearchResult';
 import fetchCurrentUser from '@/services/getMe';
 
-const page = async ({ searchParams }: { searchParams: { q: string } }) => {
+
+type Params = Promise<{
+    q: string
+}>
+
+const page = async ({ searchParams }: { searchParams: Params }) => {
     const query = await searchParams;
     const searchData = await searchSpotifyPlaylist(query.q);
     const user = await fetchCurrentUser();

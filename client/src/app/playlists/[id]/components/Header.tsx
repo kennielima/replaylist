@@ -39,7 +39,7 @@ const PlaylistHeader = ({
 }: HeaderProps) => {
     return (
         <motion.div
-            className="flex flex-col lg:flex-row gap-8 mb-8"
+            className="flex flex-col lg:flex-row gap-8 mb-8 items-center"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}

@@ -8,17 +8,17 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const HeaderComponent = ({ user }: { user: User }) => {
     return (
-        <div className='sticky top-0 z-10 w-full h-24 shadow-md flex items-center justify-between px-6 md:px-12 lg:px-24 bg-gradient-to-br from-slate-900 via-purple-800 to-slate-900'>
+        <div className='sticky top-0 z-10 w-full h-24 shadow-md flex items-center justify-between px-6 md:px-12 lg:px-22 bg-gradient-to-br from-slate-900 via-purple-800 to-slate-900'>
             {/* logo */}
-            <Link href='/' className='flex items-center space-x-2 shrink-0'>
+            <Link href='/' className='flex items-center space-x-3 shrink-0'>
                 {/* <div className="p-2 bg-white/10 backdrop-blur-md rounded-lg border border-purple-500/30"> */}
                 <div className="relative p-2 bg-purple-600/20 rounded-lg border border-purple-500/30">
-                    <Headphones className="h-7 w-7 text-green-400/90" />
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
-                        <Play className="w-3 h-3 text-white fill-white" />
+                    <Headphones className="h-9 w-9 text-green-400/90" />
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                        <Play className="w-4 h-4 text-white fill-white" />
                     </div>
                 </div>
-                <span className="text-xl font-bold text-green-200 hidden sm:inline">Replaylist</span>
+                <span className="text-2xl font-bold text-green-200 hidden sm:inline">Replaylist</span>
                 {/* <div className='flex gap-1 items-center justify-between'>
                     <div className='bg-green-400 p-3 w-fit rounded-full'>
                         <Headphones className='w-6 h-6' />
@@ -36,7 +36,7 @@ const HeaderComponent = ({ user }: { user: User }) => {
             }
             {!user && (
                 <Link href='/login'>
-                    <Button className='bg-purple-800 font-bold cursor-pointer'>Login</Button>
+                    <Button className='bg-purple-800 font-bold cursor-pointer text-lg' size={'lg'}>Login</Button>
                 </Link>
             )}
         </div>

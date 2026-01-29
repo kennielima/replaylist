@@ -8,8 +8,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": true
+    // "noEmit": true
   },
   "include": ["src/**/*", "prisma/**/*.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]

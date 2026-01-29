@@ -7,8 +7,8 @@ import logger from "../lib/logger";
 
 async function startTracker(req: TokenRequest, res: Response) {
     const accessToken = req.access_token;
-    const playlistId = req.params.id;
-    const userId = req?.user?.id;
+    const playlistId = req.params.id as string;
+    const userId = req?.user?.id as string;
 
     try {
         if (!accessToken || !userId) {
@@ -62,8 +62,8 @@ async function startTracker(req: TokenRequest, res: Response) {
 
 async function stopTracker(req: TokenRequest, res: Response) {
     const accessToken = req.access_token;
-    const playlistId = req.params.id;
-    const userId = req?.user?.id;
+    const playlistId = req.params.id as string;
+    const userId = req?.user?.id as string;
 
     try {
         if (!accessToken || !userId) {

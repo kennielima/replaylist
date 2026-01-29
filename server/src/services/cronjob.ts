@@ -4,7 +4,7 @@ import { getSpotifyToken } from './SpotifyAuth';
 import { saveSnapshot } from './snapshot';
 import logger from '../lib/logger';
 
-const cronJob = cron.schedule('0 0 * * *', async () => { // Run daily at midnight
+const cronJob = cron.schedule('0 0 * * *', async () => {
     const { access_token } = await getSpotifyToken();
     const now = new Date();
 
