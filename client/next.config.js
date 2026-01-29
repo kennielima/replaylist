@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   images: {
     remotePatterns: [
       new URL('https://open.spotify.com/**/*'),
@@ -25,7 +24,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  allowedDevOrigins: ['localhost:3000', '127.0.0.1:3000'],
+  allowedDevOrigins: ['localhost:3000', '127.0.0.1:3000', 'http://server:3000'],
 };
 
 export default nextConfig;
