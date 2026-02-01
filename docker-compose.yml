@@ -15,7 +15,7 @@ services:
     develop:
       watch:
         - action: rebuild
-          path: ./server
+          path: ./app
           target: ./server
           ignore:
             - /server/node_modules/
@@ -29,21 +29,20 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+      args:
+        - API_URL=http://server:4001
     ports:
       - "3000:3000"
     container_name: charts_tracker-client-1
-    volumes:
-      # - ./client/node_modules:/client/node_modules
-      - ./client:/app
     environment:
-      - API_URL=${API_URL}
+      - API_URL=http://server:4001
     depends_on:
       - server
     develop:
       watch:
         - action: rebuild
-          path: ./server
-          target: ./server
+          path: ./app
+          target: ./app
           ignore:
             - /server/node_modules/
     restart: unless-stopped

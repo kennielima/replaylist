@@ -6,6 +6,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+ARG API_URL=http://server:4001
+ENV API_URL=${API_URL}
+
 COPY . .
 RUN npm run build
 
