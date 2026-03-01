@@ -45,12 +45,18 @@ async function callback(req: Request, res: Response) {
             }
         })
 
+        const tokenRawText = await tokenResponse.text();
         if (!tokenResponse.ok) {
-            const errorData = await tokenResponse.text();
-            logger.error('Token exchange failed:', errorData);
-            return res.status(400).json({ error: 'token_exchange_failed' + errorData });
+            logger.error(`Token exchange failed [${tokenResponse.status}]:`, tokenRawText);
+            return res.status(400).json({ error: 'token_exchange_failed', details: tokenRawText });
         }
-        const tokenData = await tokenResponse.json();
+        let tokenData: any;
+        try {
+            tokenData = JSON.parse(tokenRawText);
+        } catch (e) {
+            logger.error(`Token response not JSON [${tokenResponse.status}]:`, tokenRawText);
+            return res.status(500).json({ error: 'invalid_token_response' });
+        }
 
         const userResponse = await fetch(`${SPOTIFY_URL}/me`, {
             method: 'GET',
@@ -58,6 +64,11 @@ async function callback(req: Request, res: Response) {
                 'Authorization': `Bearer ${tokenData.access_token}`
             }
         })
+        if (!userResponse.ok) {
+            const userError = await userResponse.text();
+            logger.error(`Spotify /me failed [${userResponse.status}]:`, userError);
+            return res.status(400).json({ error: 'spotify_user_fetch_failed' });
+        }
         const userData = await userResponse.json();
         let user = await prisma.user.upsert({
             where: {
