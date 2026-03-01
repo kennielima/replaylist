@@ -6,6 +6,10 @@ const fetchCurrentUser = async () => {
     const cookieHeader = cookie.toString();
     const token = cookie.get('token')?.value;
 
+    if (!token) {
+        return null;
+    }
+
     const res = await fetch(`${process.env.API_URL}/api/users/me`, {
         method: "GET",
         headers: {
