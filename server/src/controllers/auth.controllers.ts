@@ -66,8 +66,8 @@ async function callback(req: Request, res: Response) {
         })
         if (!userResponse.ok) {
             const userError = await userResponse.text();
-            logger.error(`Spotify /me failed [${userResponse.status}]:`, userError);
-            return res.status(400).json({ error: 'spotify_user_fetch_failed' });
+            logger.error(`Spotify /me failed [${userResponse.status}]: ${userError}`);
+            return res.status(400).json({ error: 'spotify_user_fetch_failed', status: userResponse.status });
         }
         const userData = await userResponse.json();
         let user = await prisma.user.upsert({
