@@ -5,9 +5,9 @@ const fetchSpotifyPlaylist = async () => {
     const cookie = await cookies();
     const cookieHeader = cookie.toString();
     const token = cookie.get('token')?.value;
-    if (!token) {
-        return null;
-    }
+    // if (!token) {
+    //     return null;
+    // }
 
     const fetchSpotifyPlaylist = await fetch(`${process.env.API_URL}/api/playlists/get-featured`, {
         method: "GET",
