@@ -79,7 +79,7 @@ async function callback(req: Request, res: Response) {
                 spotifyId: userData.id,
                 name: userData.display_name,
                 email: userData.email,
-                userImage: userData.images[0],
+                userImage: userData.images?.[0]?.url ?? null,
                 spotifyaccessToken: tokenData.access_token,
                 spotifyrefreshToken: tokenData.refresh_token,
                 tokenExpiry: tokenData.expires_in

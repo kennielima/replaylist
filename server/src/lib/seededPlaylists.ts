@@ -15,10 +15,10 @@ export const featuredPlaylists = [
         name: "Apple Top 100 USA",
         id: "2khn1j2muqFCP1bZveUgEt"
     },
-    {
-        name: "Apple Top 100 Global",
-        id: "758C2hxpVLddA3qW02eHtE"
-    },
+    // {
+    //     name: "Apple Top 100 Global",
+    //     id: "758C2hxpVLddA3qW02eHtE"
+    // },
     // {
     //     name: "Spotify Top Songs - Global",
     //     id: "37i9dQZEVXbNG2KDcFcKOF"

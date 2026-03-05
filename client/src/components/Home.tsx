@@ -71,6 +71,15 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                             </div>
                         </motion.div>
 
+                        <motion.p
+                            className="text-sm text-slate-400 uppercase tracking-widest mb-4"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.25 }}
+                        >
+                            A historical music archive that tracks chart evolution and listening history over time
+                        </motion.p>
+
                         <motion.h1
                             className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6"
                             initial={{ opacity: 0, y: 20 }}
@@ -86,7 +95,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                         </motion.h1>
 
                         <motion.p
-                            className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto"
+                            className="text-lg md:text-xl text-slate-300 mb-8 max-w-3xl mx-auto"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
