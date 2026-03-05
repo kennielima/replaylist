@@ -49,7 +49,7 @@ async function getFeaturedPlaylists(req: TokenRequest, res: Response) {
                         playlistId: data.id,
                         name: data.name,
                         description: data.description,
-                        image: data.images[0].url,
+                        image: data.images?.[0]?.url ?? null,
                         url: data.external_urls.spotify,
                         snapshotId: data.snapshot_id,
                         ...(sysAdmin ? systemTrackingQuery : {})
@@ -143,7 +143,7 @@ async function getPlaylist(req: TokenRequest, res: Response) {
             }
 
             trackdata.push({
-                imageUrl: track.album.images[0].url,
+                imageUrl: track.album.images?.[0]?.url ?? null,
                 trackId: track.id,
                 name: track.name,
                 artists: artistArr,

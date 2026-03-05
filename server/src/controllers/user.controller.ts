@@ -52,7 +52,7 @@ async function fetchCurrentUserPlaylists(req: TokenRequest, res: Response) {
                     name: playlist.name,
                     description: playlist.description,
                     // tracks: playlist.tracks,
-                    image: playlist.images[0].url,
+                    image: playlist.images?.[0]?.url ?? null,
                     url: playlist.external_urls.spotify,
                     userId: user ? user.id : null,
                     snapshotId: playlist.snapshot_id,
