@@ -38,7 +38,7 @@ model Playlist {
   updatedAt         DateTime   @updatedAt
   userId            String?
   description       String
-  image             String
+  image             String?
   playlistId        String     @unique
   url               String
   snapshotId        String
