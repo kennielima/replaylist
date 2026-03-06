@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Playlist Tracker",
   description: "Music-in-Time",
+  icons: {
+    icon: "/logo.svg",
+  }
 };
 
 export default function RootLayout({
