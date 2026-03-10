@@ -37,10 +37,13 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
 
     const isUserPlaylist = playlist?.userId !== null;
     const playlistId = playlist?.playlistId || playlist?.id;
-
     const [isTracking, setIsTracking] = useState(playlist?.isTracked);
     const [isTrackedBy, setIsTrackedBy] = useState(playlist?.isTrackedBy);
+    const [trackingStartDate, setTrackingStartDate] = useState<string | null>(playlist?.trackingStartDate ?? null);
     const [showTrackingDialog, setShowTrackingDialog] = useState(false);
+
+    const effectiveTrackerUser = isTrackedBy === currUser?.id ? currUser : trackerUser;
+    const canViewSnapshots = Boolean(playlist?.isFeatured || (currUser?.id && isTrackedBy === currUser.id));
 
     //fetch snapshots if tracking
     const { data: allSnapshotsData, isLoading: snapshotsLoading } = useQuery({
@@ -49,9 +52,14 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
         enabled: !!playlistId,
     })
 
-    // set initial snapdata snd date if tracking
-    const formattedFirstSnapDate = allSnapshotsData?.data?.[0]?.createdAt ? formatDate(allSnapshotsData.data[0].createdAt) : '';
-    const formattedFirstSnapData = allSnapshotsData?.data?.[0] ? allSnapshotsData?.data?.[0] : null;
+    // filter snapshots per user (featured playlists show all)
+    const mySnapshots: Snapshot[] = playlist?.isFeatured
+        ? allSnapshotsData?.data ?? []
+        : allSnapshotsData?.data?.filter((s: Snapshot) => s.userId === currUser?.id) ?? [];
+
+    // set initial snapdata and date
+    const formattedFirstSnapDate = mySnapshots?.[0]?.createdAt ? formatDate(mySnapshots[0].createdAt) : '';
+    const formattedFirstSnapData = mySnapshots?.[0] ?? null;
 
     const [snapshotDate, setSnapshotDate] = useState<string>(formattedFirstSnapDate);
     const [snapshotData, setSnapshotData] = useState(formattedFirstSnapData);
@@ -90,11 +98,14 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
         onSuccess: (data) => {
             setIsTracking(true);
             setShowTrackingDialog(false);
+            setIsTrackedBy(data.isTrackedBy);
+            if (data?.updatedPlaylist?.trackingStartDate) {
+                setTrackingStartDate(data.updatedPlaylist.trackingStartDate);
+            }
 
             if (data?.snapshot) {
                 setSnapshotData(data.snapshot);
                 setSnapshotDate(formatDate(data.snapshot.createdAt));
-                setIsTrackedBy(data.isTrackedBy);
             }
             // Invalidate queries to refetch snapshots list
             queryClient.invalidateQueries({ queryKey: ['snapshots', playlistId] });
@@ -117,7 +128,8 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
             router.push('/login');
             return;
         }
-        if (!isTracking) {
+        const isCurrentUserTracking = isTracking && isTrackedBy === currUser?.id;
+        if (!isCurrentUserTracking) {
             startTrackerMutation.mutate(playlistId);
         } else {
             stopTrackerMutation.mutate(playlistId);
@@ -125,7 +137,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
     }
 
     const handleChangeSnapshot = (snapshotId: string) => {
-        const selectedSnapshot = allSnapshotsData?.data.find((s: Snapshot) => s.id === snapshotId);
+        const selectedSnapshot = mySnapshots.find((s: Snapshot) => s.id === snapshotId);
         if (selectedSnapshot) {
             setSnapshotDate(formatDate(selectedSnapshot.createdAt));
             setSnapshotData(selectedSnapshot);
@@ -142,6 +154,8 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
         st.track.name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
         st.track.artists.some(artist => artist.toLowerCase().includes(searchKeyword.toLowerCase()))
     );
+    const showSnapshotTracks = canViewSnapshots && Boolean(snapshotData);
+    const showSnapshotCount = ((isTracking && isTrackedBy === currUser?.id) || playlist?.isFeatured) && mySnapshots.length > 0;
 
     return (
         <Fragment>
@@ -162,7 +176,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                         handleTracker={handleTracker}
                         startIsPending={startTrackerMutation.isPending}
                         stopIsPending={stopTrackerMutation.isPending}
-                        snapshotsCount={allSnapshotsData?.data?.length ?? 0}
+                        snapshotsCount={showSnapshotCount ? mySnapshots.length : 0}
                     />
 
                     {/* Content */}
@@ -171,14 +185,17 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                             <Stats
                                 playlistData={playlistData}
                                 tracks={tracks}
-                                allSnapshotsData={allSnapshotsData}
+                                allSnapshotsData={{ data: mySnapshots }}
                                 userId={currUser?.id}
-                                trackerUser={trackerUser}
+                                trackerUser={effectiveTrackerUser}
+                                isTracking={isTracking}
+                                isTrackedBy={isTrackedBy}
+                                trackingStartDate={trackingStartDate}
                             />
                         </div>
                         <div className="lg:col-span-2 space-y-8">
                             <div className={`flex items-center space-x-5 justify-between w-full ${(!isTracking && !allSnapshotsData) && "flex-row-reverse gap-4"}`}>
-                                {((isTracking || snapshotData) && (currUser?.id === isTrackedBy) || playlist?.isFeatured) && (
+                                {canViewSnapshots && mySnapshots.length > 0 && (
                                     <Select
                                         value={snapshotData?.id || ""}
                                         onValueChange={(snapshotId) => handleChangeSnapshot(snapshotId)}
@@ -187,7 +204,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                             <SelectValue placeholder={snapshotData ? formatDate(snapshotData.createdAt) : ""} />
                                         </SelectTrigger>
                                         <SelectContent className="bg-slate-800 border-white/10">
-                                            {allSnapshotsData?.data?.map((snapshot: Snapshot) => (
+                                            {mySnapshots.map((snapshot: Snapshot) => (
                                                 <SelectItem
                                                     key={snapshot.id}
                                                     value={snapshot.id}>
@@ -212,7 +229,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
 
                                 </CardHeader>
                                 <CardContent className="space-y-4">
-                                    {!isTracking &&
+                                    {!showSnapshotTracks &&
                                         (filteredSnapTracks?.map((track: Track) => (
                                             <Link
                                                 key={track.rank}
@@ -244,7 +261,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                             </Link>
                                         )))
                                     }
-                                    {isTracking &&
+                                    {showSnapshotTracks &&
                                         (filteredSnapshotTracks?.map((track: SnapshotTrack) => (
                                             <Link
                                                 key={track.rank}
@@ -283,9 +300,12 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                 <Stats
                                     playlistData={playlistData}
                                     tracks={tracks}
-                                    allSnapshotsData={allSnapshotsData}
+                                    allSnapshotsData={{ data: mySnapshots }}
                                     userId={currUser?.id}
-                                    trackerUser={trackerUser}
+                                    trackerUser={effectiveTrackerUser}
+                                    isTracking={isTracking}
+                                    isTrackedBy={isTrackedBy}
+                                    trackingStartDate={trackingStartDate}
                                 />
                             </div>
                             <Similar

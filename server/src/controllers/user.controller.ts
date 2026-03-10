@@ -111,8 +111,7 @@ async function fetchUserSnapshots(req: TokenRequest, res: Response) {
 
         const playlists = await prisma.playlist.findMany({
             where: {
-                isTracked: true,
-                isTrackedBy: user.id
+                Snapshot: { some: { userId: user.id } }
             },
             include: {
                 _count: {
@@ -121,6 +120,9 @@ async function fetchUserSnapshots(req: TokenRequest, res: Response) {
                     }
                 },
                 Snapshot: {
+                    where: {
+                        userId: user.id
+                    },
                     orderBy: {
                         createdAt: 'desc'
                     },
@@ -175,7 +177,7 @@ async function getUserById(req: TokenRequest, res: Response) {
         }
 
         const trackedPlaylists = await prisma.playlist.findMany({
-            where: { isTracked: true, isTrackedBy: user.id },
+            where: { Snapshot: { some: { userId: user.id } } },
             include: {
                 _count: {
                     select: {
@@ -183,6 +185,9 @@ async function getUserById(req: TokenRequest, res: Response) {
                     }
                 },
                 Snapshot: {
+                    where: {
+                        userId: user.id
+                    },
                     orderBy: {
                         createdAt: 'desc'
                     },

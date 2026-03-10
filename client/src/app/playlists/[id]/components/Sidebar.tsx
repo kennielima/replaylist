@@ -14,6 +14,9 @@ interface SidebarProps {
     allSnapshotsData: { data: Snapshot[] },
     userId: string | null,
     trackerUser: User | null,
+    isTracking: boolean,
+    isTrackedBy: string | null,
+    trackingStartDate: string | null,
 }
 interface SimilarProps {
     playlistData: {
@@ -23,7 +26,7 @@ interface SimilarProps {
     playlistsData: Playlist[]
 }
 
-export const Stats = ({ playlistData, tracks, allSnapshotsData, userId, trackerUser }: SidebarProps) => {
+export const Stats = ({ playlistData, tracks, allSnapshotsData, userId, trackerUser, isTracking, isTrackedBy, trackingStartDate }: SidebarProps) => {
     const currPlaylist = playlistData.data;
     return (
         <div>
@@ -41,17 +44,19 @@ export const Stats = ({ playlistData, tracks, allSnapshotsData, userId, trackerU
                         <span className="text-white font-medium">Weekly</span>
                     </div>
 
-                    <div className="flex justify-between">
-                        <span className="text-slate-400">Snapshots</span>
-                        <span className="text-white font-medium">{(currPlaylist?.isTrackedBy === userId || currPlaylist?.isFeatured) ? allSnapshotsData?.data?.length : 0}</span>
-                    </div>
-                    {currPlaylist?.isTracked && (currPlaylist?.isTrackedBy === userId || currPlaylist?.isFeatured) && (
+                    {((isTracking && isTrackedBy === userId) || currPlaylist?.isFeatured) && (allSnapshotsData?.data?.length ?? 0) > 0 && (
                         <div className="flex justify-between">
-                            <span className="text-slate-400">Tracking Start Date</span>
-                            <span className="text-white font-medium">{currPlaylist?.trackingStartDate && formatDate(currPlaylist?.trackingStartDate)}</span>
+                            <span className="text-slate-400">Snapshots</span>
+                            <span className="text-white font-medium">{allSnapshotsData?.data?.length}</span>
                         </div>
                     )}
-                    {trackerUser && playlistData?.data?.isTracked && (
+                    {isTracking && (isTrackedBy === userId || currPlaylist?.isFeatured) && (
+                        <div className="flex justify-between">
+                            <span className="text-slate-400">Tracking Start Date</span>
+                            <span className="text-white font-medium">{trackingStartDate && formatDate(trackingStartDate)}</span>
+                        </div>
+                    )}
+                    {isTracking && trackerUser && (currPlaylist?.isFeatured || isTrackedBy === userId) && (
                         <div className="flex justify-between items-center">
                             <span className="text-slate-400">Tracked by</span>
                             <Link href={`/users/${trackerUser.id}`} className="flex items-center gap-1 text-purple-400 hover:text-purple-300 font-medium text-sm transition-colors">
