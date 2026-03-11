@@ -22,7 +22,6 @@ export interface HeaderProps {
     startIsPending: boolean;
     stopIsPending: boolean;
     playlistId: string,
-    snapshotsCount: number,
 }
 const PlaylistHeader = ({
     playlist,
@@ -37,7 +36,6 @@ const PlaylistHeader = ({
     startIsPending,
     stopIsPending,
     playlistId,
-    snapshotsCount,
 }: HeaderProps) => {
     return (
         <motion.div
@@ -85,12 +83,6 @@ const PlaylistHeader = ({
                             <Music className="h-4 w-4 mr-2" />
                             {tracks?.length} tracks
                         </div>
-                        {snapshotsCount > 0 && (
-                            <div className="flex items-center">
-                                <Camera className="h-4 w-4 mr-2" />
-                                {snapshotsCount} snapshots
-                            </div>
-                        )}
                     </div>
 
                     <div className="flex flex-wrap gap-4">

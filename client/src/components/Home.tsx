@@ -29,7 +29,6 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
     const [hoveredPlaylist, setHoveredPlaylist] = useState<string | null>(null)
 
     const playlists = playlistData || [];
-    const getSnapshotCount = (playlist: Playlist) => playlist.snapshotCount ?? playlist.snapshots?.length ?? 0;
     const getTrackCount = (playlist: Playlist) => playlist.trackCount ?? playlist.tracks?.total ?? 0;
     const getDescription = (playlist: Playlist) =>
         (playlist.description || playlist.name).replace(/<a[^>]*>(.*?)<\/a>/g, "$1").replace(/<[^>]+>/g, "");
@@ -238,9 +237,6 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                                                         <span className="inline-flex items-center gap-1 rounded-full bg-white/8 px-3 py-1">
                                                             <Music className="h-3.5 w-3.5 text-purple-300" />
                                                             {getTrackCount(playlist)} tracks
-                                                        </span>
-                                                        <span className="rounded-full bg-white/8 px-3 py-1">
-                                                            {getSnapshotCount(playlist)} snapshots
                                                         </span>
                                                         <span className="ml-auto text-slate-400">Featured chart</span>
                                                     </div>

@@ -53,23 +53,10 @@ async function getFeaturedPlaylists(req: TokenRequest, res: Response) {
                         url: data.external_urls.spotify,
                         snapshotId: data.snapshot_id,
                         ...(sysAdmin ? systemTrackingQuery : {})
-                    },
-                    include: {
-                        _count: {
-                            select: {
-                                Snapshot: true
-                            }
-                        }
                     }
                 })
-                const { _count, ...playlistFields } = featuredPlaylistRecord as typeof featuredPlaylistRecord & {
-                    _count?: {
-                        Snapshot?: number;
-                    }
-                };
                 const featuredPlaylist = {
-                    ...playlistFields,
-                    snapshotCount: _count?.Snapshot ?? 0,
+                    ...featuredPlaylistRecord,
                     trackCount: data.tracks?.total ?? 0,
                 };
                 playlists.push(featuredPlaylist);

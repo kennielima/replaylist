@@ -6,23 +6,18 @@ import { SPOTIFY_URL } from "../lib/config";
 import logger from "../lib/logger";
 import { fetchUserPublicPlaylists } from "../services/playlists";
 
-type PlaylistWithSnapshotCount = Record<string, unknown> & {
-    _count?: {
-        Snapshot?: number;
-    };
+type PlaylistWithTrackCountSource = Record<string, unknown> & {
     Snapshot?: Array<{
         _count?: {
             tracks?: number;
         };
     }>;
-};
+}
 
-function formatTrackedPlaylist(playlist: PlaylistWithSnapshotCount) {
-    const { _count, Snapshot, ...rest } = playlist;
-
+function formatTrackedPlaylist(playlist: PlaylistWithTrackCountSource) {
+    const { Snapshot, ...rest } = playlist;
     return {
         ...rest,
-        snapshotCount: _count?.Snapshot ?? 0,
         trackCount: Snapshot?.[0]?._count?.tracks ?? 0,
     };
 }
@@ -111,18 +106,11 @@ async function fetchUserSnapshots(req: TokenRequest, res: Response) {
 
         const playlists = await prisma.playlist.findMany({
             where: {
-                Snapshot: { some: { userId: user.id } }
+                isTracked: true,
+                isTrackedBy: user.id
             },
             include: {
-                _count: {
-                    select: {
-                        Snapshot: { where: { userId: user.id } },
-                    }
-                },
                 Snapshot: {
-                    where: {
-                        userId: user.id
-                    },
                     orderBy: {
                         createdAt: 'desc'
                     },
@@ -139,7 +127,7 @@ async function fetchUserSnapshots(req: TokenRequest, res: Response) {
         });
 
         const response = {
-            playlists: playlists.map((playlist: PlaylistWithSnapshotCount) => formatTrackedPlaylist(playlist))
+            playlists: playlists.map((playlist: PlaylistWithTrackCountSource) => formatTrackedPlaylist(playlist))
         };
 
         await redis.set(cacheKey, JSON.stringify(response), "EX", 86400);
@@ -177,17 +165,9 @@ async function getUserById(req: TokenRequest, res: Response) {
         }
 
         const trackedPlaylists = await prisma.playlist.findMany({
-            where: { Snapshot: { some: { userId: user.id } } },
+            where: { isTracked: true, isTrackedBy: user.id },
             include: {
-                _count: {
-                    select: {
-                        Snapshot: { where: { userId: user.id } },
-                    }
-                },
                 Snapshot: {
-                    where: {
-                        userId: user.id
-                    },
                     orderBy: {
                         createdAt: 'desc'
                     },
@@ -213,7 +193,7 @@ async function getUserById(req: TokenRequest, res: Response) {
         const response = {
             user,
             publicPlaylists,
-            trackedPlaylists: trackedPlaylists.map((playlist: PlaylistWithSnapshotCount) => formatTrackedPlaylist(playlist))
+            trackedPlaylists: trackedPlaylists.map((playlist: PlaylistWithTrackCountSource) => formatTrackedPlaylist(playlist))
         };
         await redis.set(cacheKey, JSON.stringify(response), "EX", 3600);
         return res.status(200).json(response);

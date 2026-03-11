@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Playlist, Snapshot, Track, User } from '@/lib/types'
+import { Playlist, Track, User } from '@/lib/types'
 import { formatDate } from '@/lib/utils'
 import { Music, User as UserIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -11,7 +11,6 @@ interface SidebarProps {
         tracks: Track[]
     },
     tracks: Track[],
-    allSnapshotsData: { data: Snapshot[] },
     userId: string | null,
     trackerUser: User | null,
     isTracking: boolean,
@@ -26,7 +25,7 @@ interface SimilarProps {
     playlistsData: Playlist[]
 }
 
-export const Stats = ({ playlistData, tracks, allSnapshotsData, userId, trackerUser, isTracking, isTrackedBy, trackingStartDate }: SidebarProps) => {
+export const Stats = ({ playlistData, tracks, userId, trackerUser, isTracking, isTrackedBy, trackingStartDate }: SidebarProps) => {
     const currPlaylist = playlistData.data;
     return (
         <div>
@@ -43,13 +42,6 @@ export const Stats = ({ playlistData, tracks, allSnapshotsData, userId, trackerU
                         <span className="text-slate-400">Updated</span>
                         <span className="text-white font-medium">Weekly</span>
                     </div>
-
-                    {((isTracking && isTrackedBy === userId) || currPlaylist?.isFeatured) && (allSnapshotsData?.data?.length ?? 0) > 0 && (
-                        <div className="flex justify-between">
-                            <span className="text-slate-400">Snapshots</span>
-                            <span className="text-white font-medium">{allSnapshotsData?.data?.length}</span>
-                        </div>
-                    )}
                     {isTracking && (isTrackedBy === userId || currPlaylist?.isFeatured) && (
                         <div className="flex justify-between">
                             <span className="text-slate-400">Tracking Start Date</span>

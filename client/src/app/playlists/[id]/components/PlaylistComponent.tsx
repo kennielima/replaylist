@@ -159,7 +159,6 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
         st.track.artists.some(artist => artist.toLowerCase().includes(searchKeyword.toLowerCase()))
     );
     const showSnapshotTracks = canViewSnapshots && Boolean(snapshotData);
-    const showSnapshotCount = ((isTracking && isTrackedBy === currUser?.id) || playlist?.isFeatured) && mySnapshots.length > 0;
 
     return (
         <Fragment>
@@ -180,7 +179,6 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                         handleTracker={handleTracker}
                         startIsPending={startTrackerMutation.isPending}
                         stopIsPending={stopTrackerMutation.isPending}
-                        snapshotsCount={showSnapshotCount ? mySnapshots.length : 0}
                     />
 
                     {/* Content */}
@@ -189,7 +187,6 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                             <Stats
                                 playlistData={playlistData}
                                 tracks={tracks}
-                                allSnapshotsData={{ data: mySnapshots }}
                                 userId={currUser?.id}
                                 trackerUser={effectiveTrackerUser}
                                 isTracking={isTracking}
@@ -304,7 +301,6 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                 <Stats
                                     playlistData={playlistData}
                                     tracks={tracks}
-                                    allSnapshotsData={{ data: mySnapshots }}
                                     userId={currUser?.id}
                                     trackerUser={effectiveTrackerUser}
                                     isTracking={isTracking}
