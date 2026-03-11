@@ -42,7 +42,11 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
     const [trackingStartDate, setTrackingStartDate] = useState<string | null>(playlist?.trackingStartDate ?? null);
     const [showTrackingDialog, setShowTrackingDialog] = useState(false);
 
-    const effectiveTrackerUser = isTrackedBy === currUser?.id ? currUser : trackerUser;
+    const effectiveTrackerUser = playlist?.isFeatured
+        ? trackerUser
+        : isTrackedBy === currUser?.id
+            ? currUser
+            : trackerUser;
     const canViewSnapshots = Boolean(playlist?.isFeatured || (currUser?.id && isTrackedBy === currUser.id));
 
     //fetch snapshots if tracking

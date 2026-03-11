@@ -44,6 +44,8 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
         (playlist?.description || playlist.name).replace(/<a[^>]*>(.*?)<\/a>/g, "$1").replace(/<[^>]+>/g, "");
     const getTrackCount = (playlist: Playlist) => playlist.trackCount ?? playlist.tracks?.total ?? 0;
     const getSnapshotCount = (playlist: Playlist) => playlist.snapshotCount ?? 0;
+    const shouldShowSnapshotCount = (playlist: Playlist) =>
+        currView === "snapshots" && getSnapshotCount(playlist) > 0 && playlist.isFeatured;
     const statsCards = [
         ...(showPlaylistsTab ? [{
             key: "playlists",
@@ -274,7 +276,7 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                                                                     {getTrackCount(playlist)} tracks
                                                                 </span>
                                                             )}
-                                                            {currView === "snapshots" && getSnapshotCount(playlist) > 0 && (
+                                                            {shouldShowSnapshotCount(playlist) && (
                                                                 <span className="rounded-full bg-white/8 px-3 py-1">
                                                                     {getSnapshotCount(playlist)} snapshots
                                                                 </span>
@@ -319,7 +321,7 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                                                                     {getTrackCount(playlist)} tracks
                                                                 </span>
                                                             )}
-                                                            {currView === "snapshots" && getSnapshotCount(playlist) > 0 && (
+                                                            {shouldShowSnapshotCount(playlist) && (
                                                                 <span className="rounded-full bg-white/8 px-2.5 py-1">
                                                                     {getSnapshotCount(playlist)} snapshots
                                                                 </span>
