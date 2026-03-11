@@ -234,7 +234,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                         (filteredSnapTracks?.map((track: Track) => (
                                             <Link
                                                 key={track.rank}
-                                                href={`${process.env.NEXT_PUBLIC_SPOTIFY_URL}/track/${track.trackId}`}
+                                                href={`https://open.spotify.com/track/${track.trackId}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >
@@ -266,7 +266,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                         (filteredSnapshotTracks?.map((track: SnapshotTrack) => (
                                             <Link
                                                 key={track.rank}
-                                                href={`${process.env.NEXT_PUBLIC_SPOTIFY_URL}/track/${track.trackId}`}
+                                                href={`https://open.spotify.com/track/${track.trackId}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >

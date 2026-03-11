@@ -95,7 +95,7 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                                         <span className='text-slate-200 pl-[-4px]'>: @</span>
                                         {hasSpotifyProfile ? (
                                             <Link
-                                                href={`${process.env.NEXT_PUBLIC_USER_URL}/${user?.spotifyId}`}
+                                                href={`https://open.spotify.com/${user?.spotifyId}`}
                                                 className="transition-all text-base text-slate-400 font-semibold hover:text-slate-300 pl-[-4px]"
                                                 target="_blank"
                                                 rel="noopener noreferrer"

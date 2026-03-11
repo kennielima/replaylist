@@ -53,7 +53,7 @@ export const Stats = ({ playlistData, tracks, userId, trackerUser, isTracking, i
                             <span className="text-slate-400">Tracked by</span>
                             <Link href={`/users/${trackerUser.id}`} className="flex items-center gap-1 text-purple-400 hover:text-purple-300 font-medium text-sm transition-colors">
                                 <UserIcon className="h-3 w-3" />
-                                {trackerUser.email === process.env.NEXT_PUBLIC_SYS_ADMIN_EMAIL ? 'Admin' : trackerUser.name}
+                                {currPlaylist?.isFeatured ? 'Admin' : trackerUser.name}
                             </Link>
                         </div>
                     )}
