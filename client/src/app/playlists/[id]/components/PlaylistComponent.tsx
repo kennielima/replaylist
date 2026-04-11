@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
     Play,
     Music,
+    History,
 } from "lucide-react"
 import { Playlist, Snapshot, SnapshotTrack, Track, User } from "@/lib/types"
 import { formatDate } from "@/lib/utils"
@@ -195,25 +196,34 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                             />
                         </div>
                         <div className="lg:col-span-2 space-y-8">
-                            <div className={`flex items-center space-x-5 justify-between w-full ${(!isTracking && !allSnapshotsData) && "flex-row-reverse gap-4"}`}>
+                            <div className={`flex items-end space-x-5 justify-between w-full ${(!isTracking && !allSnapshotsData) && "flex-row-reverse gap-4"}`}>
                                 {canViewSnapshots && mySnapshots.length > 0 && (
-                                    <Select
-                                        value={snapshotData?.id || ""}
-                                        onValueChange={(snapshotId) => handleChangeSnapshot(snapshotId)}
-                                    >
-                                        <SelectTrigger className="w-36 h-12 bg-white/5 border-white/10 text-white">
-                                            <SelectValue placeholder={snapshotData ? formatDate(snapshotData.createdAt) : ""} />
-                                        </SelectTrigger>
-                                        <SelectContent className="bg-slate-800 border-white/10">
-                                            {mySnapshots.map((snapshot: Snapshot) => (
-                                                <SelectItem
-                                                    key={snapshot.id}
-                                                    value={snapshot.id}>
-                                                    {formatDate(snapshot.createdAt)}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    <div className="flex flex-col gap-1.5">
+                                        <div className="flex items-center justify-between px-0.5">
+                                            <div className="flex items-center gap-1.5 text-sm font-medium text-slate-300">
+                                                <History className="h-4 w-4 text-purple-400" />
+                                                <span>Snapshots</span>
+                                            </div>
+                                            <span className="text-xs text-slate-400">{mySnapshots.length} saved</span>
+                                        </div>
+                                        <Select
+                                            value={snapshotData?.id || ""}
+                                            onValueChange={(snapshotId) => handleChangeSnapshot(snapshotId)}
+                                        >
+                                            <SelectTrigger className="w-44 h-10 bg-white/5 border-white/10 hover:border-purple-400/40 text-white transition-colors">
+                                                <SelectValue placeholder={snapshotData ? formatDate(snapshotData.createdAt) : "Select date"} />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-slate-800 border-white/10">
+                                                {mySnapshots.map((snapshot: Snapshot) => (
+                                                    <SelectItem
+                                                        key={snapshot.id}
+                                                        value={snapshot.id}>
+                                                        {formatDate(snapshot.createdAt)}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 )}
                                 <SearchByFilter
                                     placeholder="Search for track or artist..."

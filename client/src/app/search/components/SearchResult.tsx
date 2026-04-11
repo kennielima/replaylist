@@ -13,18 +13,20 @@ import React from 'react'
 type SearchTypeProps = {
     searchData: { data: Playlist[] },
     query: string,
-    user?: User
 }
 
-const SearchResult = ({ searchData, query, user }: SearchTypeProps) => {
+const SearchResult = ({ searchData, query }: SearchTypeProps) => {
     const playlists = searchData.data;
     const getTrackCount = (playlist: Playlist) => playlist.trackCount ?? playlist.tracks?.total ?? 0;
 
     return (
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
-            <div className='flex items-center justify-center mb-6'>
-                <SearchByQuery category="playlist" user={user} />
+            <div className='flex items-center justify-center mb-4'>
+                <SearchByQuery category="playlist" />
             </div>
+            <p className="text-center text-sm text-slate-400 mb-6">
+                Can&apos;t find what you&apos;re looking for? Paste a Spotify playlist URL or ID for an exact match.
+            </p>
             <h2 className='my-8 text-lg'>Showing <b>{playlists.length}</b> results for &apos;<u>{query}</u>&apos;</h2>
             {/* Playlists Grid */}
             <motion.div

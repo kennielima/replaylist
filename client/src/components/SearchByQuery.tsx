@@ -2,20 +2,15 @@ import React, { useState } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { useRouter } from 'next/navigation';
-import { User } from '@/lib/types';
 
-const SearchByQuery = ({ category, user }: { category: string, user: User | undefined }) => {
+const SearchByQuery = ({ category }: { category: string }) => {
     const router = useRouter();
     const [query, setQuery] = useState("");
 
     const searchHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!query) return;
-        if (!user) {
-            router.push(`/login`);
-        } else {
-            router.push(`/search?q=${query}`);
-        }
+        router.push(`/search?q=${query}`);
     }
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value);
