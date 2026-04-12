@@ -44,6 +44,14 @@ async function fetchCurrentUserPlaylists(req: TokenRequest, res: Response) {
     const cached = await redis.get(cacheKey);
 
     try {
+        if (!user) {
+            return res.status(401).json({ error: "User not authenticated" });
+        }
+
+        if (!user.spotifyId || !user.spotifyrefreshToken) {
+            return res.status(200).json({ data: [] });
+        }
+
         if (!accessToken) {
             return res.status(401).json({ error: "Spotify access token is not available" });
         }
@@ -56,7 +64,17 @@ async function fetchCurrentUserPlaylists(req: TokenRequest, res: Response) {
             method: 'GET',
             headers: { 'Authorization': 'Bearer ' + accessToken },
         })
+        if (!response.ok) {
+            const errorBody = await response.text();
+            logger.warn(`Spotify /me/playlists failed [${response.status}] for user ${user.id}: ${errorBody}`);
+            return res.status(200).json({ data: [] });
+        }
         const playlistData = await response.json();
+
+        if (!Array.isArray(playlistData.items)) {
+            logger.warn(`Spotify /me/playlists returned invalid payload for user ${user.id}`);
+            return res.status(200).json({ data: [] });
+        }
 
         let fetchedPlaylists = [];
         for (let playlist of playlistData.items) {
