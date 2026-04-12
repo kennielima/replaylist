@@ -56,7 +56,7 @@ const SearchResult = ({ searchData, query }: SearchTypeProps) => {
                                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                                             <Button
                                                 size="icon"
-                                                className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-purple-600 hover:bg-purple-500 text-white shadow-lg h-11 w-11"
+                                                className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-purple-400 hover:bg-purple-300 text-black shadow-lg h-11 w-11"
                                             >
                                                 <Play className="h-5 w-5" />
                                             </Button>

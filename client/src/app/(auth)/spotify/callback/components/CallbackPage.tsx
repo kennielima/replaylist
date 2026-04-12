@@ -73,7 +73,7 @@ const CallbackPage = ({ user }: { user: User }) => {
                                 <p className='font-medium text-gray-300'>Successfully connected to Spotify!</p>
                             </div>
                             <div className='flex gap-2 items-center border border-gray-500 shadow-md py-4 px-6 rounded-md'>
-                                <Avatar className="h-10 w-10 bg-purple-500">
+                                <Avatar className="h-10 w-10 bg-purple-400">
                                     <AvatarImage src={user.userImage} alt={user.name} />
                                     <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                                 </Avatar>

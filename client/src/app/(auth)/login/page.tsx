@@ -10,11 +10,11 @@ const page = () => {
                 <div className="flex items-center justify-center space-x-2">
                     <div className="relative p-2 bg-purple-600/20 rounded-lg border border-purple-500/30">
                         <Headphones className="h-7 w-7 text-green-400/90" />
-                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-purple-400 rounded-full flex items-center justify-center">
                             <Play className="w-3 h-3 text-white fill-white" />
                         </div>
                     </div>
-                    <h3 className="text-3xl font-bold text-green-200">Replaylist</h3>
+                    <h3 className="text-3xl font-bold text-purple-400">Replaylist</h3>
                 </div>
                 <h3 className="text-4xl font-semibold text-white">Your Spotify Journey Visualized</h3>
                 <h3 className="text-slate-300">Connect your Spotify account and track your favourite playlists, see the evolution of popular music charts.</h3>

@@ -38,9 +38,9 @@ const SearchByQuery = ({ category }: { category: string }) => {
             />
             <Button
                 type="submit"
-                variant="outline"
+                // variant="outline"
                 className={`${category === 'playlist' && "h-12"} 
-                    ${category === 'track' && "h-10"} bg-purple-600 hover:bg-purple-500 text-white cursor-pointer`}
+                    ${category === 'track' && "h-10"} bg-purple-400 hover:bg-purple-300 text-black cursor-pointer`}
             >
                 Search
             </Button>

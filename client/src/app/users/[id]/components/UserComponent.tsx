@@ -76,7 +76,7 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-4">
-                                    <Avatar className="h-12 w-12 bg-purple-500">
+                                    <Avatar className="h-12 w-12 bg-purple-400">
                                         <AvatarImage src={user?.userImage || "/placeholder.svg"} alt={user?.name} />
                                         <AvatarFallback>{getInitials(user?.name)}</AvatarFallback>
                                     </Avatar>
@@ -114,7 +114,7 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                                 {isOwner && (
                                     <Button
                                         size="lg"
-                                        className="bg-purple-600 hover:bg-purple-500 text-white px-4 cursor-pointer"
+                                        className="bg-purple-400 hover:bg-purple-300 text-black px-4 cursor-pointer"
                                         onClick={logout}
                                     >
                                         Logout
@@ -333,7 +333,7 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                                 <Card className="overflow-hidden border-white/10 bg-white/5 shadow-xl">
                                     <CardContent className="px-6 py-10 sm:px-10">
                                         <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-                                            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-purple-500/15 ring-1 ring-purple-400/20">
+                                            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-purple-400/15 ring-1 ring-purple-400/20">
                                                 {hasSearchKeyword || totalItemsInView > 0 ? (
                                                     <Search className="h-8 w-8 text-purple-300" />
                                                 ) : currView === "snapshots" ? (
@@ -375,7 +375,7 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                                                 ) : currView === "snapshots" && isOwner ? (
                                                     <>
                                                         <Link href="/">
-                                                            <Button className="cursor-pointer bg-purple-600 text-white hover:bg-purple-500">
+                                                            <Button className="cursor-pointer bg-purple-400 text-black hover:bg-purple-300">
                                                                 <Compass className="h-4 w-4" />
                                                                 Explore playlists
                                                             </Button>
@@ -394,7 +394,7 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                                                     </>
                                                 ) : (
                                                     <Link href="/">
-                                                        <Button className="cursor-pointer bg-purple-600 text-white hover:bg-purple-500">
+                                                        <Button className="cursor-pointer bg-purple-400 text-black hover:bg-purple-300">
                                                             <Compass className="h-4 w-4" />
                                                             Browse charts
                                                         </Button>

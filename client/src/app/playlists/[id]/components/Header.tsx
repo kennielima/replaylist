@@ -88,7 +88,7 @@ const PlaylistHeader = ({
                     <div className="flex flex-wrap gap-4">
                         <Button
                             size="lg"
-                            className="bg-purple-600 hover:bg-purple-500 text-white px-8 cursor-pointer"
+                            className="bg-purple-400 hover:bg-purple-300 text-black px-8 cursor-pointer"
                             onClick={() => window.open(playlist?.url || `https://open.spotify.com/playlist/${playlist?.id}`, "_blank")}
                         >
                             <Play className="h-5 w-5" />
@@ -138,7 +138,7 @@ const PlaylistHeader = ({
                                             <Button
                                                 onClick={handleTracker}
                                                 disabled={startIsPending}
-                                                className={`${playlist?.isFeatured && "hover:cursor-not-allowed"} bg-purple-600 hover:bg-purple-500 cursor-pointer`}
+                                                className={`${playlist?.isFeatured && "hover:cursor-not-allowed"} bg-purple-400 hover:bg-purple-300 text-black cursor-pointer`}
                                             >
                                                 {startIsPending ? (
                                                     <p className="flex items-center gap-1">

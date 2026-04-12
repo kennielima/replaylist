@@ -243,7 +243,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                                     key={snapshot.id}
                                                     onClick={() => handleChangeSnapshot(snapshot.id)}
                                                     className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${snapshotData?.id === snapshot.id
-                                                        ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
+                                                        ? 'bg-purple-400 text-black shadow-lg shadow-purple-500/20'
                                                         : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white border border-white/10'
                                                         }`}
                                                 >
@@ -343,7 +343,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                                                         <div className="flex items-center gap-2">
                                                                             <p className="text-white font-medium">{track?.track?.name}</p>
                                                                             {isNew && (
-                                                                                <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 uppercase tracking-wide">new</span>
+                                                                                <span className="text-xs px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 tracking-wide">New</span>
                                                                             )}
                                                                             {rankDiff !== null && rankDiff > 0 && (
                                                                                 <span className="text-xs font-semibold text-emerald-400">↑{rankDiff}</span>

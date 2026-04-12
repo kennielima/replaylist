@@ -64,7 +64,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                         >
                             <div className="relative p-4 bg-white/10 backdrop-blur-md rounded-full">
                                 <Headphones className="h-12 w-12 text-green-400/90" />
-                                <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                                <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-400 rounded-full flex items-center justify-center">
                                     <Play className="w-3 h-3 text-white fill-white" />
                                 </div>
                             </div>
@@ -80,7 +80,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                         </motion.p> */}
 
                         <motion.h1
-                            className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6"
+                            className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-200 mb-6"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.3 }}
@@ -117,19 +117,19 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-white mb-2">5+</div>
+                            <div className="text-3xl md:text-4xl font-bold text-slate-300 mb-2">5+</div>
                             <div className="text-slate-300">Popular Charts</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-white mb-2">10+</div>
+                            <div className="text-3xl md:text-4xl font-bold text-slate-300 mb-2">10+</div>
                             <div className="text-slate-300">Playlists Tracked</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-white mb-2">5+</div>
+                            <div className="text-3xl md:text-4xl font-bold text-slate-300 mb-2">5+</div>
                             <div className="text-slate-300">Active Users</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-white mb-2">24/7</div>
+                            <div className="text-3xl md:text-4xl font-bold text-slate-300 mb-2">24/7</div>
                             <div className="text-slate-300">Live Updates</div>
                         </div>
                     </div>
@@ -182,10 +182,10 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                                 <motion.div
                                     key={playlist.playlistId}
                                     variants={itemVariants}
-                                    whileHover={{ scale: 1.02 }}
+                                    // whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
-                                    onHoverStart={() => setHoveredPlaylist(playlist.playlistId)}
-                                    onHoverEnd={() => setHoveredPlaylist(null)}
+                                // onHoverStart={() => setHoveredPlaylist(playlist.playlistId)}
+                                // onHoverEnd={() => setHoveredPlaylist(null)}
                                 >
                                     <Link href={`/playlists/${playlist?.playlistId}`}>
                                         <Card className="group h-full cursor-pointer overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-xl transition-all duration-300 hover:bg-white/10 hover:shadow-2xl">
@@ -210,7 +210,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                                                         >
                                                             <Button
                                                                 size="icon"
-                                                                className="bg-purple-600 hover:bg-purple-500 text-white shadow-lg h-14 w-14"
+                                                                className="bg-purple-400 hover:bg-purple-300 text-black shadow-lg h-14 w-14"
                                                             >
                                                                 <Play className="h-6 w-6" />
                                                             </Button>
@@ -303,7 +303,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                         viewport={{ once: true }}
                     >
                         <Link href={!user ? '/login' : '/users/me'}>
-                            <Button size="lg" className="cursor-pointer bg-purple-600 hover:bg-purple-500 text-white px-8 py-3">
+                            <Button size="lg" className="cursor-pointer bg-purple-400 hover:bg-purple-300 text-black px-8 py-3">
                                 <Music className="mr-2 h-5 w-5" />
                                 Start Tracking Now
                             </Button>
