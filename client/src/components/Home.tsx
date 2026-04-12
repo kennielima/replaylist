@@ -53,7 +53,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                 animate="visible"
                 variants={heroVariants}
             >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-purple-600/20 px-6 sm:px-10 lg:px-16" />
+                <div className="absolute inset-0 border-b border-white/5" />
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-10 lg:px-12 py-12 lg:py-20">
                     <div className="text-center">
                         <motion.div
@@ -86,7 +86,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                             transition={{ duration: 0.6, delay: 0.3 }}
                         >
                             Playlists change. Your
-                            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                            <span className="text-purple-300">
                                 {" "}
                                 memories{" "}
                             </span>
@@ -108,7 +108,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
 
             {/* Stats Section */}
             <motion.section
-                className="py-16 bg-black/20 backdrop-blur-sm"
+                className="py-16 border-y border-white/5"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.8 }}
@@ -271,7 +271,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
 
             {/* CTA Section */}
             <motion.section
-                className="py-20 bg-gradient-to-r from-purple-600/20 to-purple-600/20"
+                className="py-20 border-t border-white/5"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.8 }}

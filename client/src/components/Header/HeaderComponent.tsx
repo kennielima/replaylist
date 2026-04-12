@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const HeaderComponent = ({ user }: { user: User }) => {
     return (
-        <header className='sticky top-0 z-10 w-full h-24 shadow-md flex items-center justify-between px-6 md:px-12 lg:px-22 bg-gradient-to-br from-slate-900 via-purple-800 to-slate-900 backdrop-blur-md'>
+        <header className='sticky top-0 z-10 w-full h-24 flex items-center justify-between px-6 md:px-12 lg:px-22 bg-[#080d1a]/90 backdrop-blur-md border-b border-white/5'>
             {/* logo */}
             <Link href='/' className='flex items-center space-x-3 shrink-0'>
                 <div className="relative p-2 bg-purple-600/20 rounded-lg border border-purple-500/30">
@@ -29,7 +29,7 @@ const HeaderComponent = ({ user }: { user: User }) => {
             }
             {!user && (
                 <Link href='/login'>
-                    <Button className='bg-purple-800 font-bold cursor-pointer text-lg' size={'lg'}>Login</Button>
+                    <Button className='bg-white text-black hover:bg-white/90 font-bold cursor-pointer text-lg' size={'lg'}>Login</Button>
                 </Link>
             )}
         </header>
