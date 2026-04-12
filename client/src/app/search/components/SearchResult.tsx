@@ -25,7 +25,7 @@ const SearchResult = ({ searchData, query }: SearchTypeProps) => {
                 <SearchByQuery category="playlist" />
             </div>
             <p className="text-center text-sm text-slate-400 mb-6">
-                Can&apos;t find what you&apos;re looking for? Paste a Spotify playlist URL or ID for an exact match.
+                Can&apos;t find what you&apos;re looking for? Paste Spotify playlist link for an exact match.
             </p>
             <h2 className='my-8 text-lg'>Showing <b>{playlists.length}</b> results for &apos;<u>{query}</u>&apos;</h2>
             {/* Playlists Grid */}

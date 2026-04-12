@@ -17,7 +17,7 @@ const SearchByQuery = ({ category }: { category: string }) => {
     }
     let placeholder;
     if (category === 'playlist') {
-        placeholder = "Search for any playlist"
+        placeholder = "Search playlist by name or link"
     } else if (category === 'track') {
         placeholder = "Search for any track"
     }
