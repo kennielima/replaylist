@@ -5,6 +5,7 @@ import {
     Play,
     Music,
     History,
+    ChevronRight,
 } from "lucide-react"
 import { Playlist, Snapshot, SnapshotTrack, Track, User } from "@/lib/types"
 import { formatDate } from "@/lib/utils"
@@ -41,6 +42,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
     const [isTrackedBy, setIsTrackedBy] = useState(playlist?.isTrackedBy);
     const [trackingStartDate, setTrackingStartDate] = useState<string | null>(playlist?.trackingStartDate ?? null);
     const [showTrackingDialog, setShowTrackingDialog] = useState(false);
+    const [isChangingSnapshot, setIsChangingSnapshot] = useState(false);
 
     const effectiveTrackerUser = playlist?.isFeatured
         ? trackerUser
@@ -49,19 +51,16 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
             : trackerUser;
     const canViewSnapshots = Boolean(playlist?.isFeatured || (currUser?.id && isTrackedBy === currUser.id));
 
-    //fetch snapshots if tracking
     const { data: allSnapshotsData, isLoading: snapshotsLoading } = useQuery({
         queryKey: ['snapshots', playlistId],
         queryFn: () => getSnapshots(playlistId),
         enabled: !!playlistId,
     })
 
-    // filter snapshots per user (featured playlists show all)
     const mySnapshots: Snapshot[] = playlist?.isFeatured
         ? allSnapshotsData?.data ?? []
         : allSnapshotsData?.data?.filter((s: Snapshot) => s.userId === currUser?.id) ?? [];
 
-    // set initial snapdata and date
     const formattedFirstSnapDate = mySnapshots?.[0]?.createdAt ? formatDate(mySnapshots[0].createdAt) : '';
     const formattedFirstSnapData = mySnapshots?.[0] ?? null;
 
@@ -70,7 +69,6 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
     const [snapshotTracks, setSnapshotTracks] = useState<SnapshotTrack[]>([]);
     const [searchKeyword, setSearchKeyword] = useState<string>("");
 
-    // render initial snapdata and date if tracking
     useEffect(() => {
         if (formattedFirstSnapDate && snapshotDate === '') {
             setSnapshotDate(formattedFirstSnapDate);
@@ -88,12 +86,12 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
         queryFn: () => getSnapshotById(playlistId, snapshotData?.id),
         enabled: !!snapshotData,
         refetchOnMount: true,
-        // staleTime: 0
     })
 
     useEffect(() => {
         if (snapshotDetails?.data?.tracks) {
             setSnapshotTracks(snapshotDetails.data.tracks);
+            setIsChangingSnapshot(false);
         }
     }, [snapshotDetails]);
 
@@ -106,12 +104,10 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
             if (data?.updatedPlaylist?.trackingStartDate) {
                 setTrackingStartDate(data.updatedPlaylist.trackingStartDate);
             }
-
             if (data?.snapshot) {
                 setSnapshotData(data.snapshot);
                 setSnapshotDate(formatDate(data.snapshot.createdAt));
             }
-            // Invalidate queries to refetch snapshots list
             queryClient.invalidateQueries({ queryKey: ['snapshots', playlistId] });
         },
     });
@@ -125,13 +121,8 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
     });
 
     const handleTracker = () => {
-        if (playlist?.isFeatured) {
-            return;
-        }
-        if (!currUser) {
-            router.push('/login');
-            return;
-        }
+        if (playlist?.isFeatured) return;
+        if (!currUser) { router.push('/login'); return; }
         const isCurrentUserTracking = isTracking && isTrackedBy === currUser?.id;
         if (!isCurrentUserTracking) {
             startTrackerMutation.mutate(playlistId);
@@ -143,6 +134,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
     const handleChangeSnapshot = (snapshotId: string) => {
         const selectedSnapshot = mySnapshots.find((s: Snapshot) => s.id === snapshotId);
         if (selectedSnapshot) {
+            setIsChangingSnapshot(true);
             setSnapshotDate(formatDate(selectedSnapshot.createdAt));
             setSnapshotData(selectedSnapshot);
             queryClient.invalidateQueries({ queryKey: ['snapshot', playlistId, selectedSnapshot.id] });
@@ -162,6 +154,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
 
     const currentSnapshotIndex = mySnapshots.findIndex((s: Snapshot) => s.id === snapshotData?.id);
     const previousSnapshot = currentSnapshotIndex >= 0 ? mySnapshots[currentSnapshotIndex + 1] ?? null : null;
+    const isOldestSnapshot = previousSnapshot === null && mySnapshots.length > 1;
 
     const { data: prevSnapshotDetails } = useQuery({
         queryKey: ['snapshot', playlistId, previousSnapshot?.id],
@@ -189,9 +182,11 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
         return { newCount, upCount, downCount };
     }, [snapshotTracks, prevRankMap, previousSnapshot]);
 
+    const showOverflowHint = mySnapshots.length > 5;
+
     return (
         <Fragment>
-            {snapshotsLoading || snapshotIsLoading ? (
+            {snapshotsLoading ? (
                 <SkeletonComponent />
             ) : (
                 <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
@@ -210,7 +205,6 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                         stopIsPending={stopTrackerMutation.isPending}
                     />
 
-                    {/* Content */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div className="grid lg:hidden">
                             <Stats
@@ -226,6 +220,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                         <div className="lg:col-span-2 space-y-8">
                             {canViewSnapshots && mySnapshots.length > 0 && (
                                 <div className="rounded-xl bg-white/5 border border-white/10 p-4 space-y-3">
+                                    {/* Header row */}
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
                                             <History className="h-4 w-4 text-purple-400" />
@@ -240,115 +235,140 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                             </div>
                                         )}
                                     </div>
-                                    <div className="flex gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
-                                        {mySnapshots.map((snapshot: Snapshot) => (
-                                            <button
-                                                key={snapshot.id}
-                                                onClick={() => handleChangeSnapshot(snapshot.id)}
-                                                className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${snapshotData?.id === snapshot.id
-                                                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
-                                                    : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white border border-white/10'
-                                                    }`}
-                                            >
-                                                {formatDate(snapshot.createdAt)}
-                                            </button>
-                                        ))}
+
+                                    <div className="relative">
+                                        <div className="flex gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
+                                            {mySnapshots.map((snapshot: Snapshot) => (
+                                                <button
+                                                    key={snapshot.id}
+                                                    onClick={() => handleChangeSnapshot(snapshot.id)}
+                                                    className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${snapshotData?.id === snapshot.id
+                                                        ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
+                                                        : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white border border-white/10'
+                                                        }`}
+                                                >
+                                                    {formatDate(snapshot.createdAt)}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        {showOverflowHint && (
+                                            <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-gradient-to-l from-[#0d1321] to-transparent flex items-center justify-end">
+                                                <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             )}
-                            <div className={`flex items-end justify-between w-full ${(!isTracking && !allSnapshotsData) && "flex-row-reverse gap-4"}`}>
-                                <SearchByFilter
-                                    placeholder="Search for track or artist..."
-                                    searchKeyword={searchKeyword}
-                                    setSearchKeyword={setSearchKeyword}
-                                />
-                            </div>
+
                             <Card className="bg-white/5 backdrop-blur-md border border-white/10 py-8">
-                                <CardHeader>
+                                <CardHeader className="flex flex-row items-center justify-between">
                                     <CardTitle className="text-white flex items-center">
                                         <Music className="h-5 w-5 mr-2" />
                                         Tracks
                                     </CardTitle>
-
+                                    <SearchByFilter
+                                        placeholder="Search track or artist..."
+                                        searchKeyword={searchKeyword}
+                                        setSearchKeyword={setSearchKeyword}
+                                    />
                                 </CardHeader>
                                 <CardContent className="space-y-4">
-                                    {!showSnapshotTracks &&
-                                        (filteredSnapTracks?.map((track: Track) => (
-                                            <Link
-                                                key={track.rank}
-                                                href={`https://open.spotify.com/track/${track.trackId}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <div
-                                                    className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors"
-                                                >
-                                                    <div className="flex items-center space-x-3">
-                                                        <div className="w-8 h-8 bg-purple-600/20 rounded flex items-center justify-center text-purple-300 text-sm font-medium">
-                                                            {track.rank}
-                                                        </div>
-                                                        <div>
-                                                            <p className="text-white font-medium">{track.name}</p>
-                                                            <p className="text-sm text-slate-400">
-                                                                {track?.artists?.map((artist: string, index: number) =>
-                                                                    <span key={index}>
-                                                                        {artist}
-                                                                        {(track.artists.length > 1 && index < track.artists.length - 1) && ', '}
-                                                                    </span>
-                                                                )}
-                                                            </p>
-                                                        </div>
+                                    {isOldestSnapshot && showSnapshotTracks && (
+                                        <p className="text-xs text-slate-500 pb-2 border-b border-white/5">
+                                            Earliest snapshot — no prior data to compare.
+                                        </p>
+                                    )}
+                                    {isChangingSnapshot || snapshotIsLoading ? (
+                                        <div className="space-y-3">
+                                            {[...Array(8)].map((_, i) => (
+                                                <div key={i} className="flex items-center space-x-3 p-3 animate-pulse">
+                                                    <div className="w-8 h-8 bg-white/10 rounded" />
+                                                    <div className="flex-1 space-y-2">
+                                                        <div className="h-4 bg-white/10 rounded w-2/5" />
+                                                        <div className="h-3 bg-white/10 rounded w-1/4" />
                                                     </div>
-                                                    <Play aria-label="Play on Spotify" className="h-5 w-5 hover:scale-120 transition-transform duration-300 text-slate-400 hover:text-white" />
                                                 </div>
-                                            </Link>
-                                        )))
-                                    }
-                                    {showSnapshotTracks &&
-                                        (filteredSnapshotTracks?.map((track: SnapshotTrack) => {
-                                            const prevRank = prevRankMap.get(track.trackId);
-                                            const isNew = previousSnapshot !== null && prevRank === undefined;
-                                            const rankDiff = prevRank !== undefined ? prevRank - track.rank : null;
-                                            return (
-                                                <Link
-                                                    key={track.rank}
-                                                    href={`https://open.spotify.com/track/${track.trackId}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors">
-                                                        <div className="flex items-center space-x-3">
-                                                            <div className="w-8 h-8 bg-purple-600/20 rounded flex items-center justify-center text-purple-300 text-sm font-medium">
-                                                                {track.rank}
-                                                            </div>
-                                                            <div>
-                                                                <div className="flex items-center gap-2">
-                                                                    <p className="text-white font-medium">{track?.track?.name}</p>
-                                                                    {isNew && (
-                                                                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 uppercase tracking-wide">new</span>
-                                                                    )}
-                                                                    {rankDiff !== null && rankDiff > 0 && (
-                                                                        <span className="text-[11px] font-semibold text-emerald-400">↑{rankDiff}</span>
-                                                                    )}
-                                                                    {rankDiff !== null && rankDiff < 0 && (
-                                                                        <span className="text-[11px] font-semibold text-rose-400">↓{Math.abs(rankDiff)}</span>
-                                                                    )}
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <>
+                                            {!showSnapshotTracks &&
+                                                filteredSnapTracks?.map((track: Track) => (
+                                                    <Link
+                                                        key={track.rank}
+                                                        href={`https://open.spotify.com/track/${track.trackId}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        <div className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors">
+                                                            <div className="flex items-center space-x-3">
+                                                                <div className="w-8 h-8 bg-purple-600/20 rounded flex items-center justify-center text-purple-300 text-sm font-medium">
+                                                                    {track.rank}
                                                                 </div>
-                                                                <p className="text-sm text-slate-400">
-                                                                    {track?.track?.artists?.map((artist: string, index: number) =>
-                                                                        <span key={index}>
-                                                                            {artist}
-                                                                            {(track?.track?.artists.length > 1 && index < track?.track?.artists.length - 1) && ', '}
-                                                                        </span>
-                                                                    )}
-                                                                </p>
+                                                                <div>
+                                                                    <p className="text-white font-medium">{track.name}</p>
+                                                                    <p className="text-sm text-slate-400">
+                                                                        {track?.artists?.map((artist: string, index: number) =>
+                                                                            <span key={index}>
+                                                                                {artist}
+                                                                                {(track.artists.length > 1 && index < track.artists.length - 1) && ', '}
+                                                                            </span>
+                                                                        )}
+                                                                    </p>
+                                                                </div>
                                                             </div>
+                                                            <Play aria-label="Play on Spotify" className="h-5 w-5 hover:scale-120 transition-transform duration-300 text-slate-400 hover:text-white" />
                                                         </div>
-                                                        <Play aria-label="Play on Spotify" className="h-5 w-5 hover:scale-120 transition-transform duration-300 text-slate-400 hover:text-white" />
-                                                    </div>
-                                                </Link>
-                                            );
-                                        }))}
+                                                    </Link>
+                                                ))
+                                            }
+                                            {showSnapshotTracks &&
+                                                filteredSnapshotTracks?.map((track: SnapshotTrack) => {
+                                                    const prevRank = prevRankMap.get(track.trackId);
+                                                    const isNew = previousSnapshot !== null && prevRank === undefined;
+                                                    const rankDiff = prevRank !== undefined ? prevRank - track.rank : null;
+                                                    return (
+                                                        <Link
+                                                            key={track.rank}
+                                                            href={`https://open.spotify.com/track/${track.trackId}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            <div className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors">
+                                                                <div className="flex items-center space-x-3">
+                                                                    <div className="w-8 h-8 bg-purple-600/20 rounded flex items-center justify-center text-purple-300 text-sm font-medium">
+                                                                        {track.rank}
+                                                                    </div>
+                                                                    <div>
+                                                                        <div className="flex items-center gap-2">
+                                                                            <p className="text-white font-medium">{track?.track?.name}</p>
+                                                                            {isNew && (
+                                                                                <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 uppercase tracking-wide">new</span>
+                                                                            )}
+                                                                            {rankDiff !== null && rankDiff > 0 && (
+                                                                                <span className="text-xs font-semibold text-emerald-400">↑{rankDiff}</span>
+                                                                            )}
+                                                                            {rankDiff !== null && rankDiff < 0 && (
+                                                                                <span className="text-xs font-semibold text-rose-400">↓{Math.abs(rankDiff)}</span>
+                                                                            )}
+                                                                        </div>
+                                                                        <p className="text-sm text-slate-400">
+                                                                            {track?.track?.artists?.map((artist: string, index: number) =>
+                                                                                <span key={index}>
+                                                                                    {artist}
+                                                                                    {(track?.track?.artists.length > 1 && index < track?.track?.artists.length - 1) && ', '}
+                                                                                </span>
+                                                                            )}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                                <Play aria-label="Play on Spotify" className="h-5 w-5 hover:scale-120 transition-transform duration-300 text-slate-400 hover:text-white" />
+                                                            </div>
+                                                        </Link>
+                                                    );
+                                                })}
+                                        </>
+                                    )}
                                 </CardContent>
                             </Card>
                         </div>
@@ -371,8 +391,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                         </div>
                     </div>
                 </div>
-            )
-            }
-        </Fragment >
+            )}
+        </Fragment>
     )
 }
