@@ -69,7 +69,7 @@ const PlaylistHeader = ({
                         )}
                     </div>
 
-                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{playlist?.name}</h1>
+                    <h1 className="text-4xl md:text-5xl font-bold text-slate-300 mb-4">{playlist?.name}</h1>
 
                     <p
                         className="text-lg text-slate-300 leading-relaxed mb-6"

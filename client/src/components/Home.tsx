@@ -80,7 +80,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                         </motion.p> */}
 
                         <motion.h1
-                            className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-200 mb-6"
+                            className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-300 mb-6"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.3 }}
@@ -94,7 +94,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                         </motion.h1>
 
                         <motion.p
-                            className="text-lg md:text-xl text-slate-300 mb-8 max-w-3xl mx-auto"
+                            className="text-lg md:text-xl text-slate-400 mb-8 max-w-3xl mx-auto"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
@@ -115,22 +115,22 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                 viewport={{ once: true }}
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-slate-300">
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-slate-300 mb-2">5+</div>
-                            <div className="text-slate-300">Popular Charts</div>
+                            <div className="text-3xl md:text-4xl font-bold mb-2">5+</div>
+                            <div className="">Popular Charts</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-slate-300 mb-2">10+</div>
-                            <div className="text-slate-300">Playlists Tracked</div>
+                            <div className="text-3xl md:text-4xl font-bold mb-2">10+</div>
+                            <div className="">Playlists Tracked</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-slate-300 mb-2">5+</div>
-                            <div className="text-slate-300">Active Users</div>
+                            <div className="text-3xl md:text-4xl font-bold mb-2">5+</div>
+                            <div className="">Active Users</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-slate-300 mb-2">24/7</div>
-                            <div className="text-slate-300">Live Updates</div>
+                            <div className="text-3xl md:text-4xl font-bold mb-2">24/7</div>
+                            <div className="">Live Updates</div>
                         </div>
                     </div>
                 </div>
