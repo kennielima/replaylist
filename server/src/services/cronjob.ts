@@ -22,6 +22,17 @@ const cronJob = cron.schedule('0 0 * * *', async () => {
         if (daysSinceStart > 0 && daysSinceStart % 7 === 0) {
             const tracker = playlist.isTrackedBy || '';
             try {
+                const sevendaysago = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                const recentSnapshot = await prisma.snapshot.findFirst({
+                    where: {
+                        playlistId: playlist.playlistId,
+                        createdAt: {
+                            gte: sevendaysago
+                        }
+                    }
+                });
+                if (recentSnapshot) continue;
+
                 const snapshot = await saveSnapshot(playlist.playlistId, tracker, access_token, null);
             } catch (err) {
                 logger.error(`Error tracking ${playlist.id}:`, err);
