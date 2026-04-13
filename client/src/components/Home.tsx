@@ -18,7 +18,7 @@ import { Playlist, User } from "@/lib/types"
 import Link from "next/link"
 import Image from "next/image"
 import SearchByQuery from "./SearchByQuery"
-import { containerVariants, itemVariants } from "@/lib/utils"
+import { containerVariants, getDescription, itemVariants } from "@/lib/utils"
 
 interface HomepageProps {
     playlistData?: Playlist[]
@@ -30,8 +30,6 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
 
     const playlists = playlistData || [];
     const getTrackCount = (playlist: Playlist) => playlist.trackCount ?? playlist.tracks?.total ?? 0;
-    const getDescription = (playlist: Playlist) =>
-        (playlist.description || playlist.name).replace(/<a[^>]*>(.*?)<\/a>/g, "$1").replace(/<[^>]+>/g, "");
 
     const heroVariants = {
         hidden: { opacity: 0, y: 50 },
@@ -63,7 +61,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                             className="flex justify-center mb-6"
                         >
                             <div className="relative p-4 bg-white/10 backdrop-blur-md rounded-full">
-                                <Headphones className="h-12 w-12 text-green-400/90" />
+                                <Headphones className="h-12 w-12 text-purple-300" />
                                 <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-400 rounded-full flex items-center justify-center">
                                     <Play className="w-3 h-3 text-white fill-white" />
                                 </div>
@@ -94,7 +92,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                         </motion.h1>
 
                         <motion.p
-                            className="text-lg md:text-xl text-slate-400 mb-8 max-w-3xl mx-auto"
+                            className="text-base md:text-xl text-slate-300 mb-8 px-4 max-w-3xl mx-auto"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
@@ -230,7 +228,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                                                             {playlist.name}
                                                         </h3>
                                                         <p className="min-h-[4.5rem] text-sm leading-6 text-slate-300 line-clamp-3">
-                                                            {getDescription(playlist)}
+                                                            {getDescription(playlist.description, playlist.name)}
                                                         </p>
                                                     </div>
                                                     <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-white/10 pt-4 text-xs text-slate-200">

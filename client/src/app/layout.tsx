@@ -33,9 +33,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased bg-[#111009] text-white font-sans`} //080d1a
       >
         <QueryProvider>
-          <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-purple-600 focus:text-white">
+          {/* <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-purple-600 focus:text-white">
             Skip to main content
-          </a>
+          </a> */}
           <Header />
           <main id="main-content" className="flex-1">
             {children}

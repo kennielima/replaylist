@@ -221,11 +221,13 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                             {canViewSnapshots && mySnapshots.length > 0 && (
                                 <div className="rounded-xl bg-white/5 border border-white/10 p-4 space-y-3">
                                     {/* Header row */}
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2">
-                                            <History className="h-4 w-4 text-purple-400" />
-                                            <span className="text-sm font-semibold text-white">Snapshot History</span>
-                                            <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-medium">{mySnapshots.length} saved</span>
+                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                                        <div className="flex items-center justify-between sm:justify-start gap-2">
+                                            <div className="flex items-center gap-2">
+                                                <History className="h-4 w-4 text-purple-400 shrink-0" />
+                                                <span className="text-sm font-semibold text-white">Snapshot History</span>
+                                            </div>
+                                            <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-medium sm:ml-1">{mySnapshots.length} saved</span>
                                         </div>
                                         {changeSummary && (
                                             <div className="flex items-center gap-3 text-xs">
@@ -261,8 +263,8 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                             )}
 
                             <Card className="bg-white/5 backdrop-blur-md border border-white/10 py-8">
-                                <CardHeader className="flex flex-row items-center justify-between">
-                                    <CardTitle className="text-white flex items-center">
+                                <CardHeader className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+                                    <CardTitle className="text-white flex items-center shrink-0">
                                         <Music className="h-5 w-5 mr-2" />
                                         Tracks
                                     </CardTitle>
@@ -301,8 +303,8 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                                         rel="noopener noreferrer"
                                                     >
                                                         <div className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors">
-                                                            <div className="flex items-center space-x-3">
-                                                                <div className="w-8 h-8 bg-purple-600/20 rounded flex items-center justify-center text-purple-300 text-sm font-medium">
+                                                            <div className="flex items-start space-x-3">
+                                                                <div className="w-8 h-8 shrink-0 bg-purple-600/20 rounded flex items-center justify-center text-purple-300 text-sm font-medium mt-0.5">
                                                                     {track.rank}
                                                                 </div>
                                                                 <div>
@@ -317,7 +319,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                                                     </p>
                                                                 </div>
                                                             </div>
-                                                            <Play aria-label="Play on Spotify" className="h-5 w-5 hover:scale-120 transition-transform duration-300 text-slate-400 hover:text-white" />
+                                                            <Play aria-label="Play on Spotify" className="h-5 w-5 shrink-0 hover:scale-120 transition-transform duration-300 text-slate-400 hover:text-white" />
                                                         </div>
                                                     </Link>
                                                 ))
@@ -334,16 +336,16 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                         >
-                                                            <div className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors">
-                                                                <div className="flex items-center space-x-3">
-                                                                    <div className="w-8 h-8 bg-purple-600/20 rounded flex items-center justify-center text-purple-300 text-sm font-medium">
+                                                            <div className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors space-x-2">
+                                                                <div className="flex items-start space-x-3">
+                                                                    <div className="w-8 h-8 shrink-0 bg-purple-600/20 rounded flex items-center justify-center text-purple-300 text-sm font-medium mt-0.5">
                                                                         {track.rank}
                                                                     </div>
                                                                     <div>
                                                                         <div className="flex items-center gap-2">
                                                                             <p className="text-white font-medium">{track?.track?.name}</p>
                                                                             {isNew && (
-                                                                                <span className="text-xs px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 tracking-wide">New</span>
+                                                                                <span className="text-xs px-1.5 py-0.5 font-semibold rounded-full bg-purple-500/20 text-purple-300 tracking-wide">NEW</span>
                                                                             )}
                                                                             {rankDiff !== null && rankDiff > 0 && (
                                                                                 <span className="text-xs font-semibold text-emerald-400">↑{rankDiff}</span>
@@ -362,7 +364,7 @@ export default function PlaylistPage({ playlistData, playlistsData, currUser, tr
                                                                         </p>
                                                                     </div>
                                                                 </div>
-                                                                <Play aria-label="Play on Spotify" className="h-5 w-5 hover:scale-120 transition-transform duration-300 text-slate-400 hover:text-white" />
+                                                                <Play aria-label="Play on Spotify" className="h-5 w-5 shrink-0 hover:scale-120 transition-transform duration-300 text-slate-400 hover:text-white" />
                                                             </div>
                                                         </Link>
                                                     );

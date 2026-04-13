@@ -57,6 +57,14 @@ export const itemVariants = {
   },
 }
 
+export const getDescription = (description?: string | null, fallback = "") =>
+  (description || fallback)
+    .replace(/<a[^>]*>(.*?)<\/a>/g, "$1")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(Number(dec)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
+    .replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+
 export const exportFn = <T extends Record<string, unknown>>(data?: T[]) => {
   if (!data || data.length === 0) return;
 

@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from "@/components/ui/card"
 import { Playlist, User } from '@/lib/types'
-import { containerVariants, getInitials, itemVariants } from '@/lib/utils'
+import { containerVariants, getDescription, getInitials, itemVariants } from '@/lib/utils'
 import logout from '@/services/logout'
 import { motion } from 'framer-motion'
 import { Compass, Grid3X3, List, Music, Play, Search, User as User2 } from 'lucide-react'
@@ -41,8 +41,6 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
     const hasSearchKeyword = searchKeyword.trim().length > 0;
     const hasResults = (playlistsToShow?.length ?? 0) > 0;
     const showEmptyState = !hasResults;
-    const getDescription = (playlist: Playlist) =>
-        (playlist?.description || playlist.name).replace(/<a[^>]*>(.*?)<\/a>/g, "$1").replace(/<[^>]+>/g, "");
     const getTrackCount = (playlist: Playlist) => playlist.trackCount ?? playlist.tracks?.total ?? 0;
     const statsCards = [
         ...(showPlaylistsTab ? [{
@@ -262,7 +260,7 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                                                                         {playlist.name}
                                                                     </h3>
                                                                     <p className="min-h-[4.5rem] text-sm leading-6 text-slate-300 line-clamp-3">
-                                                                        {getDescription(playlist)}
+                                                                        {getDescription(playlist.description, playlist.name)}
                                                                     </p>
                                                                 </div>
                                                                 <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-white/10 pt-4 text-xs text-slate-200">
@@ -294,7 +292,7 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                                                                     {playlist.name}
                                                                 </h3>
                                                                 <p className="text-sm text-slate-300 truncate">
-                                                                    {getDescription(playlist)}
+                                                                    {getDescription(playlist.description, playlist.name)}
                                                                 </p>
                                                                 <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-300">
                                                                     <span className="inline-flex items-center gap-1 rounded-full bg-white/8 px-2.5 py-1">

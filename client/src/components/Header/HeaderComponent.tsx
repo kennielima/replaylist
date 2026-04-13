@@ -9,10 +9,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 const HeaderComponent = ({ user }: { user: User }) => {
     return (
         <header className='sticky top-0 z-10 w-full h-24 flex items-center justify-between px-6 md:px-12 lg:px-22 bg-[#111009]/90 backdrop-blur-md border-b border-white/5'>
-            {/* logo //080d1a */}
             <Link href='/' className='flex items-center space-x-3 shrink-0'>
                 <div className="relative p-2 bg-purple-600/20 rounded-lg border border-purple-400/30">
-                    <Headphones className="h-9 w-9 text-green-400/90" />
+                    <Headphones className="h-9 w-9 text-purple-300" />
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-400 rounded-full flex items-center justify-center">
                         <Play className="w-4 h-4 text-white fill-white" />
                     </div>
@@ -29,7 +28,7 @@ const HeaderComponent = ({ user }: { user: User }) => {
             }
             {!user && (
                 <Link href='/login'>
-                    <Button className='bg-purple-400 hover:bg-purple-300 text-black font-bold cursor-pointer text-lg' size={'lg'}>Login</Button>
+                    <Button className='bg-purple-400 hover:bg-purple-300 text-black font-bold cursor-pointer' size={'sm'}>Login</Button>
                 </Link>
             )}
         </header>
