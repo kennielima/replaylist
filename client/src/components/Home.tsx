@@ -148,7 +148,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                             <TrendingUp className="h-8 w-8 text-purple-400 mr-3" />
                             <h2 className="text-3xl md:text-4xl font-bold text-white">Popular Charts</h2>
                         </div>
-                        <p className="text-xl text-slate-300 max-w-2xl mx-auto">
+                        <p className="text-base md:text-xl text-slate-300 max-w-2xl mx-auto">
                             Explore the most trending playlists and their evolution in time.
                         </p>
                     </motion.div>
@@ -286,7 +286,7 @@ const Homepage = ({ playlistData, user }: HomepageProps) => {
                         Ready to Start Tracking Your Music?
                     </motion.h2>
                     <motion.p
-                        className="text-xl text-slate-300 mb-8"
+                        className="text-base md:text-xl text-slate-300 mb-8"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1 }}

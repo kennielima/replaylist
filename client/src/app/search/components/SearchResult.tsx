@@ -27,7 +27,7 @@ const SearchResult = ({ searchData, query }: SearchTypeProps) => {
             <p className="text-center text-sm text-slate-400 mb-6">
                 Can&apos;t find what you&apos;re looking for? Paste Spotify playlist link for an exact match.
             </p>
-            <h2 className='my-8 text-lg'>Showing <b>{playlists.length}</b> results for &apos;<u>{query}</u>&apos;</h2>
+            <h2 className='my-8 text-lg'>Showing <b>{playlists.length}</b> result(s) for &apos;<u>{query}</u>&apos;</h2>
             {/* Playlists Grid */}
             <motion.div
                 className={"grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"}
