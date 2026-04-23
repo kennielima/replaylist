@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Replaylist",
-  description: "Music-in-Time",
+  description: "Playlist-in-Time",
   icons: {
     icon: "/logo.svg",
   }

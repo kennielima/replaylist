@@ -5,10 +5,10 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Playlist, User } from '@/lib/types'
 import { containerVariants, itemVariants } from '@/lib/utils'
 import { motion } from 'framer-motion'
-import { Music, Play } from 'lucide-react'
+import { Info, Music, Play } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 
 type SearchTypeProps = {
     searchData: { data: Playlist[] },
@@ -18,15 +18,34 @@ type SearchTypeProps = {
 const SearchResult = ({ searchData, query }: SearchTypeProps) => {
     const playlists = searchData.data;
     const getTrackCount = (playlist: Playlist) => playlist.trackCount ?? playlist.tracks?.total ?? 0;
+    const [showNote, setShowNote] = useState(false);
 
     return (
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
             <div className='flex items-center justify-center mb-4'>
                 <SearchByQuery category="playlist" />
             </div>
-            <p className="text-center text-sm text-slate-400 mb-6">
-                Can&apos;t find what you&apos;re looking for? Paste Spotify playlist link for an exact match.
-            </p>
+            <div className="flex flex-col items-center justify-center mb-6">
+                <p className="text-center text-sm text-slate-400">
+                    Can&apos;t find what you&apos;re looking for? Paste Spotify playlist link for an exact match.
+                </p>
+                {/* <div
+                    className="relative"
+                    onMouseEnter={() => setShowNote(true)}
+                    onMouseLeave={() => setShowNote(false)}
+                >
+                    <Info className="h-3.5 w-3.5 text-yellow-400 cursor-pointer" />
+                    {showNote && (
+                        <div className="absolute bottom-full right-0 mb-2 w-56 max-w-[calc(100vw-2rem)] rounded-md bg-slate-800 border border-white/10 px-3 py-2 text-xs text-slate-300 shadow-lg z-10">
+                            Spotify-owned playlists (e.g. editorial charts) are not supported by the Spotify API and cannot be searched or tracked.
+                            <div className="absolute top-full right-1 border-4 border-transparent border-t-slate-800" />
+                        </div>
+                    )}
+                </div> */}
+                <p className="text-center text-xs text-slate-500">
+                    Spotify-owned playlists (e.g. editorial charts) are not supported by the API and cannot be searched or tracked.
+                </p>
+            </div>
             <h2 className='my-8 text-lg'>Showing <b>{playlists.length}</b> result(s) for &apos;<u>{query}</u>&apos;</h2>
             {/* Playlists Grid */}
             <motion.div
