@@ -245,14 +245,6 @@ const UserComponent = ({ user, playlistData, trackedPlaylists, isOwner = false }
                                                                     alt={playlist.name}
                                                                     className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300"
                                                                 />
-                                                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                                                                    <Button
-                                                                        size="icon"
-                                                                        className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-purple-600 hover:bg-purple-500 text-white shadow-lg h-11 w-11"
-                                                                    >
-                                                                        <Play className="h-5 w-5" />
-                                                                    </Button>
-                                                                </div>
                                                             </div>
                                                             <div className="flex flex-1 flex-col p-5">
                                                                 <div className="space-y-3">

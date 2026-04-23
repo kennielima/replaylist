@@ -6,6 +6,7 @@ import Link from 'next/link';
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import HeaderSearch from './HeaderSearch';
+import MobileNav from './MobileNav';
 
 const HeaderComponent = ({ user }: { user: User }) => {
     return (
@@ -19,25 +20,29 @@ const HeaderComponent = ({ user }: { user: User }) => {
                 </div>
                 <span className="text-2xl font-bold text-purple-300 hidden sm:inline">Replaylist</span>
             </Link>
-            <div className='flex items-center gap-3 sm:gap-6'>
+
+            {/* Desktop nav */}
+            <div className='hidden sm:flex items-center gap-6'>
                 <HeaderSearch />
                 <Link href='/about' className='text-slate-300 hover:text-purple-300 text-sm font-medium transition-colors'>
                     About
                 </Link>
-                {user &&
+                {user ? (
                     <Link href='/users/me'>
                         <Avatar className="h-12 w-12 bg-purple-400">
                             <AvatarImage src={user.userImage} alt={user.name} />
                             <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                         </Avatar>
                     </Link>
-                }
-                {!user && (
+                ) : (
                     <Link href='/login'>
                         <Button className='bg-purple-400 hover:bg-purple-300 text-black font-bold cursor-pointer' size={'sm'}>Login</Button>
                     </Link>
                 )}
             </div>
+
+            {/* Mobile nav */}
+            <MobileNav user={user} />
         </header>
     )
 }

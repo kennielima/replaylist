@@ -1,14 +1,13 @@
 "use client"
-import SearchByQuery from '@/components/SearchByQuery'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Playlist, User } from '@/lib/types'
+import { Playlist } from '@/lib/types'
 import { containerVariants, itemVariants } from '@/lib/utils'
 import { motion } from 'framer-motion'
-import { Info, Music, Play } from 'lucide-react'
+import { AlertTriangle, Music, Play } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React from 'react'
 
 type SearchTypeProps = {
     searchData: { data: Playlist[] },
@@ -18,35 +17,22 @@ type SearchTypeProps = {
 const SearchResult = ({ searchData, query }: SearchTypeProps) => {
     const playlists = searchData.data;
     const getTrackCount = (playlist: Playlist) => playlist.trackCount ?? playlist.tracks?.total ?? 0;
-    const [showNote, setShowNote] = useState(false);
-
     return (
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
-            <div className='flex items-center justify-center mb-4'>
-                <SearchByQuery category="playlist" />
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
+                <div>
+                    <h2 className='text-lg'>
+                        Showing <b>{playlists.length}</b> {playlists.length === 1 ? 'result' : 'results'} for &apos;<u>{query}</u>&apos;
+                    </h2>
+                    <p className="text-xs text-slate-500 mt-1">
+                        Can&apos;t find it? Try pasting the Spotify playlist link directly.
+                    </p>
+                </div>
+                <span className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-xs text-amber-300 shrink-0">
+                    <AlertTriangle className="h-3 w-3" />
+                    Spotify-owned playlists not supported
+                </span>
             </div>
-            <div className="flex flex-col items-center justify-center mb-6">
-                <p className="text-center text-sm text-slate-400">
-                    Can&apos;t find what you&apos;re looking for? Paste Spotify playlist link for an exact match.
-                </p>
-                {/* <div
-                    className="relative"
-                    onMouseEnter={() => setShowNote(true)}
-                    onMouseLeave={() => setShowNote(false)}
-                >
-                    <Info className="h-3.5 w-3.5 text-yellow-400 cursor-pointer" />
-                    {showNote && (
-                        <div className="absolute bottom-full right-0 mb-2 w-56 max-w-[calc(100vw-2rem)] rounded-md bg-slate-800 border border-white/10 px-3 py-2 text-xs text-slate-300 shadow-lg z-10">
-                            Spotify-owned playlists (e.g. editorial charts) are not supported by the Spotify API and cannot be searched or tracked.
-                            <div className="absolute top-full right-1 border-4 border-transparent border-t-slate-800" />
-                        </div>
-                    )}
-                </div> */}
-                <p className="text-center text-xs text-slate-500">
-                    Spotify-owned playlists (e.g. editorial charts) are not supported by the API and cannot be searched or tracked.
-                </p>
-            </div>
-            <h2 className='my-8 text-lg'>Showing <b>{playlists.length}</b> result(s) for &apos;<u>{query}</u>&apos;</h2>
             {/* Playlists Grid */}
             <motion.div
                 className={"grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"}
@@ -72,14 +58,6 @@ const SearchResult = ({ searchData, query }: SearchTypeProps) => {
                                             alt={playlist.name}
                                             className="h-52 w-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
-                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                                            <Button
-                                                size="icon"
-                                                className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-purple-400 hover:bg-purple-300 text-black shadow-lg h-11 w-11"
-                                            >
-                                                <Play className="h-5 w-5" />
-                                            </Button>
-                                        </div>
 
                                     </div>
                                     <div className="flex flex-1 flex-col p-5">
@@ -96,7 +74,7 @@ const SearchResult = ({ searchData, query }: SearchTypeProps) => {
                                                 <Music className="h-4 w-4 text-purple-300" />
                                                 Playlist
                                             </span>
-                                            <span className="rounded-full bg-white/8 px-3 py-1 text-xs font-semibold text-slate-200">
+                                            <span className="rounded-full bg-white/8 px-3 py-1 text-xs font-semibold text-slate-200 shrink-0">
                                                 {getTrackCount(playlist)} tracks
                                             </span>
                                         </div>
@@ -117,8 +95,11 @@ const SearchResult = ({ searchData, query }: SearchTypeProps) => {
                 >
                     <Music className="h-12 w-12 mx-auto text-slate-400 mb-4" />
                     <h3 className="text-lg font-semibold text-white mb-2">
-                        No playlists found
+                        No playlists found for &apos;{query}&apos;
                     </h3>
+                    <p className="text-sm text-slate-500">
+                        Try a different name, or paste a Spotify playlist link for an exact match.
+                    </p>
                 </motion.div>
             )}
         </div>
